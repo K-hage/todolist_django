@@ -8,6 +8,14 @@ repos:
         - id: end-of-file-fixer
         - id: double-quote-string-fixer
         - id: check-yaml
+  - repo: local
+    hooks:
+      - id: autoflake
+        name: autoflake
+        entry: autoflake
+        language: system
+        types: [ python ]
+        args: [ --in-place, --remove-all-unused-imports, --remove-duplicate-keys ]
   - repo: https://github.com/pycqa/isort
     rev: 5.10.1
     hooks:
