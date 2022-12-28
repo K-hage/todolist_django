@@ -31,8 +31,9 @@ services:
     build: .
     restart: on-failure
     ports:
-      - '8000:8000'
+      - '${API_PORT:-8000}:8000'
     volumes:
+      - ./:/todolist/
       - ./.docker_env:/todolist/.env
     depends_on:
       db:
@@ -41,9 +42,9 @@ services:
         condition: service_completed_successfully
 
   frontend:
-    image: sermalenk/skypro-front:lesson-34
+    image: sermalenk/skypro-front:lesson-35
     restart: on-failure
     ports:
-      - '80:80'
+      - '${FRONTEND_PORT:-80}:80'
     depends_on:
       - api
