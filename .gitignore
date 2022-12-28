@@ -165,3 +165,5 @@ readme.txt
 .docker_env
 postgres_data/
 passwords.txt
+swagger/
+.env.actions

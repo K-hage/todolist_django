@@ -1,9 +1,11 @@
 passwords.txt
 postgres_data/
+.git/
 .github/
 .idea/
 .docker_env
 .env
+.env.example
 poetry.lock
 readme.txt
 .pre-commit-config.yaml
@@ -16,3 +18,5 @@ env/
 .python-version
 postgres-data
 __pycache__/
+.env.actions
+swagger/
