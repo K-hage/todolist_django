@@ -36,8 +36,8 @@ class Migration(migrations.Migration):
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
             ],
             options={
-                'verbose_name': 'Пользователь',
-                'verbose_name_plural': 'Пользователи',
+                'verbose_name': 'пользователя',
+                'verbose_name_plural': 'пользователи',
             },
             managers=[
                 ('objects', django.contrib.auth.models.UserManager()),
