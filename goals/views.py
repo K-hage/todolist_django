@@ -1,8 +1,12 @@
-from rest_framework import permissions
+from rest_framework import (
+    filters,
+    permissions
+)
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView
 )
+from rest_framework.pagination import LimitOffsetPagination
 
 from goals.models import GoalCategory
 from goals.serializers import (
@@ -21,6 +25,14 @@ class GoalCategoryListView(ListAPIView):
     model = GoalCategory
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCategorySerializer
+    pagination_class = LimitOffsetPagination
+    filter_backends = [
+        filters.OrderingFilter,
+        filters.SearchFilter,
+    ]
+    ordering_fields = ['title', 'created']
+    ordering = ['title']
+    search_fields = ['title']
 
     def get_queryset(self):
         return GoalCategory.objects.filter(
