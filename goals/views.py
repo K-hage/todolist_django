@@ -13,9 +13,12 @@ from rest_framework.pagination import LimitOffsetPagination
 from goals.filters import GoalDateFilter
 from goals.models import (
     Goal,
-    GoalCategory
+    GoalCategory,
+    GoalComment
 )
 from goals.serializers import (
+    CommentCreateSerializer,
+    CommentSerializer,
     GoalCategoryCreateSerializer,
     GoalCategorySerializer,
     GoalCreateSerializer,
@@ -99,3 +102,35 @@ class GoalListView(ListAPIView):
 
     def get_queryset(self):
         return Goal.objects.filter(user=self.request.user).exclude(status=Goal.Status.archived)
+
+
+class CommentCreateView(CreateAPIView):
+    model = GoalComment
+    serializer_class = CommentCreateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class CommentView(RetrieveUpdateDestroyAPIView):
+    model = GoalComment
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return GoalComment.objects.filter(user=self.request.user)
+
+
+class CommentListView(ListAPIView):
+    model = GoalComment
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = LimitOffsetPagination
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_fields = ['goal']
+    ordering = ['-created']
+
+    def get_queryset(self):
+        return GoalComment.objects.filter(user=self.request.user)
