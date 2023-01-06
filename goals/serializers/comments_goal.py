@@ -29,4 +29,4 @@ class CommentSerializer(serializers.ModelSerializer):
     def validate_goal(self, value):
         if value.user != self.context['request'].user:
             raise serializers.ValidationError('Не владелец цели')
-        return
+        return value

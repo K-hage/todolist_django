@@ -9,7 +9,10 @@ from rest_framework.generics import (
 )
 from rest_framework.pagination import LimitOffsetPagination
 
-from goals.models import GoalCategory
+from goals.models import (
+    Goal,
+    GoalCategory
+)
 from goals.serializers import (
     GoalCategoryCreateSerializer,
     GoalCategorySerializer
@@ -51,5 +54,6 @@ class GoalCategoryView(RetrieveUpdateDestroyAPIView):
 
     def perform_destroy(self, instance):
         instance.is_deleted = True
+        Goal.objects.filter(category_id__exact=instance.id).update(status=Goal.Status.archived)
         instance.save()
         return instance
