@@ -1,7 +1,5 @@
 from django.db import models
 
-from core.models import User
-
 
 class DatesModelMixin(models.Model):
     class Meta:
@@ -17,7 +15,7 @@ class GoalCategory(DatesModelMixin):
         verbose_name_plural = 'Категории'
 
     title = models.CharField(verbose_name='Название', max_length=255)
-    user = models.ForeignKey(User, verbose_name='Автор', on_delete=models.PROTECT)
+    user = models.ForeignKey('core.User', verbose_name='Автор', on_delete=models.PROTECT)
     is_deleted = models.BooleanField(verbose_name='Удалена', default=False)
 
 
@@ -39,13 +37,13 @@ class Goal(DatesModelMixin):
         critical = 4, 'Критический'
 
     user = models.ForeignKey(
-        User,
+        'core.User',
         verbose_name='Пользователь',
         related_name='goals',
         on_delete=models.PROTECT,
     )
     category = models.ForeignKey(
-        GoalCategory,
+        'goals.GoalCategory',
         verbose_name='Категория',
         on_delete=models.CASCADE
     )
@@ -83,13 +81,13 @@ class GoalComment(DatesModelMixin):
         verbose_name_plural = 'Комментарии к целям'
 
     user = models.ForeignKey(
-        User,
+        'core.User',
         verbose_name='Автор',
         related_name='goal_comments',
         on_delete=models.PROTECT,
     )
     goal = models.ForeignKey(
-        Goal,
+        'goals.Goal',
         verbose_name='Цель',
         related_name='goal_comments',
         on_delete=models.PROTECT,
