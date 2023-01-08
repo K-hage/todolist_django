@@ -33,6 +33,12 @@ class GoalCategory(DatesModelMixin):
         verbose_name='Удалена',
         default=False
     )
+    board = models.ForeignKey(
+        'goals.Board',
+        verbose_name='Доска',
+        on_delete=models.PROTECT,
+        related_name='categories'
+    )
 
 
 class Goal(DatesModelMixin):
