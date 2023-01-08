@@ -1,3 +1,8 @@
+from .board import (
+    BoardCreateView,
+    BoardListView,
+    BoardView
+)
 from .comments_goal import (
     CommentCreateView,
     CommentListView,
@@ -25,4 +30,7 @@ __all__ = [
     'CommentCreateView',
     'CommentListView',
     'CommentView',
+    'BoardView',
+    'BoardListView',
+    'BoardCreateView'
 ]

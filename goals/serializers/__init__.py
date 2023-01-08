@@ -1,3 +1,9 @@
+from .board import (
+    BoardCreateSerializer,
+    BoardListSerializer,
+    BoardParticipantSerializer,
+    BoardSerializer
+)
 from .comments_goal import (
     CommentCreateSerializer,
     CommentSerializer
@@ -19,4 +25,8 @@ __all__ = [
     'GoalCategoryCreateSerializer',
     'CommentSerializer',
     'CommentCreateSerializer',
+    'BoardSerializer',
+    'BoardParticipantSerializer',
+    'BoardCreateSerializer',
+    'BoardListSerializer'
 ]
