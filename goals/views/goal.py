@@ -28,7 +28,7 @@ class GoalCreateView(CreateAPIView):
 class GoalView(RetrieveUpdateDestroyAPIView):
     model = Goal
     serializer_class = GoalSerializer
-    permission_classes = [permissions.IsAuthenticated, GoalPermissions]
+    permission_classes = [GoalPermissions]
 
     def get_queryset(self):
         return Goal.objects.filter(category__board__participants__user=self.request.user)
