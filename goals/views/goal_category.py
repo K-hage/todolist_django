@@ -51,7 +51,7 @@ class GoalCategoryListView(ListAPIView):
 class GoalCategoryView(RetrieveUpdateDestroyAPIView):
     model = GoalCategory
     serializer_class = GoalCategorySerializer
-    permission_classes = [permissions.IsAuthenticated, GoalCategoryPermissions]
+    permission_classes = [GoalCategoryPermissions]
 
     def get_queryset(self):
         return GoalCategory.objects.filter(

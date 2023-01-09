@@ -14,18 +14,19 @@ def forward_func(apps, schema_editor):
     GoalCategory = apps.get_model('goals', 'GoalCategory')
 
     with transaction.atomic():  # Применяем все изменения одной транзакцией
+        now = timezone.now()
         for user in User.objects.all():  # Для каждого пользователя
             new_board = Board.objects.create(
                 title='Мои цели',
-                created=timezone.now(),
-                updated=timezone.now()
+                created=now,
+                updated=now
             )
             BoardParticipant.objects.create(
                 user=user,
                 board=new_board,
                 role=1,
-                created=timezone.now(),
-                updated=timezone.now()
+                created=now,
+                updated=now
             )
 
             # проставляем всем категориям пользователя его доску
@@ -37,6 +38,7 @@ def reverse_func(apps, schema_editor):
     Board = apps.get_model('goals', 'Board')
     BoardParticipant = apps.get_model('goals', 'BoardParticipant')
     GoalCategory = apps.get_model('goals', 'GoalCategory')
+
     with transaction.atomic():
         for user in User.objects.all():  # Для каждого пользователя
             board = Board.objects.filter(
