@@ -1,7 +1,10 @@
 from rest_framework import serializers
 
 from core.serializers import ProfileSerializer
-from goals.models import GoalCategory
+from goals.models import (
+    BoardParticipant,
+    GoalCategory
+)
 
 
 class GoalCategoryCreateSerializer(serializers.ModelSerializer):
@@ -11,6 +14,18 @@ class GoalCategoryCreateSerializer(serializers.ModelSerializer):
         model = GoalCategory
         read_only_fields = ('id', 'created', 'updated', 'user')
         fields = '__all__'
+
+    def validate_board(self, value):
+        if value.is_deleted:
+            raise serializers.ValidationError('нет доступа к удаленным данным')
+        allow = BoardParticipant.objects.filter(
+            board=value,
+            role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
+            user=self.context['request'].user,
+        ).exists()
+        if not allow:
+            raise serializers.ValidationError('Создавать могут только владелец и редакторы')
+        return value
 
 
 class GoalCategorySerializer(serializers.ModelSerializer):

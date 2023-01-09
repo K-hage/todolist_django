@@ -1,7 +1,10 @@
 from rest_framework import serializers
 
 from core.serializers import ProfileSerializer
-from goals.models import Goal
+from goals.models import (
+    BoardParticipant,
+    Goal
+)
 
 
 class GoalCreateSerializer(serializers.ModelSerializer):
@@ -14,10 +17,14 @@ class GoalCreateSerializer(serializers.ModelSerializer):
 
     def validate_category(self, value):
         if value.is_deleted:
-            raise serializers.ValidationError('Не разрешено в удаленной категории')
+            raise serializers.ValidationError('Не разрешено, категория была удалена')
 
-        if value.user != self.context['request'].user:
-            raise serializers.ValidationError('Не являетесь владельцем категории')
+        if not BoardParticipant.objects.filter(
+                board_id=value.board_id,
+                role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
+                user=self.context['request'].user,
+        ).exists():
+            raise serializers.ValidationError('Создавать могут только владелец и редакторы')
 
         return value
 
@@ -31,7 +38,10 @@ class GoalSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate_category(self, value):
-        if value.user != self.context['request'].user:
-            raise serializers.ValidationError('Не являетесь владельцем категории')
+        if value.is_deleted:
+            raise serializers.ValidationError('Не разрешено, категория была удалена')
+
+        if self.instance.category.board_id != value.board_id:
+            raise serializers.ValidationError('Изменения могут вносить только владелец и редакторы')
 
         return value
