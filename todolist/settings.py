@@ -14,6 +14,12 @@ DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 
+MY_APPS = [
+    'core',
+    'goals',
+    'bot',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -25,9 +31,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'social_django',
     'django_filters',
-    'core',
-    'goals'
 ]
+
+INSTALLED_APPS += MY_APPS
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
