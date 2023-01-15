@@ -98,5 +98,6 @@ class Command(BaseCommand):
         tg_user.save(update_fields=['verification_code'])
         self.tg_client.send_message(
             msg.chat.id,
-            f'Код подтверждения:\n{tg_user.verification_code}'
+            f'Код подтверждения:\n{tg_user.verification_code}\n'
+            f'Ссылка на сайт:\n{settings.DOMAIN_SITE}'
         )
