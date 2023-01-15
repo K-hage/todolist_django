@@ -39,6 +39,16 @@ services:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
+  bot:
+    image: ${IMAGE_TAG}:${GITHUB_REF_NAME}-${GITHUB_RUN_ID}
+    depends_on:
+      db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    volumes:
+      - ./.env:/todolist/.env
+    command: python manage.py runbot
 
   frontend:
     image: ${IMAGE_FRONT}
