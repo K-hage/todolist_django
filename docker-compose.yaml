@@ -22,9 +22,10 @@ services:
   migrations:
     build: .
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
-      - ./.docker_env:/todolist/.env
+      - ./.env:/todolist/.env
     command: python manage.py migrate
 
   api:
@@ -34,15 +35,25 @@ services:
       - '${API_PORT:-8000}:8000'
     volumes:
       - ./:/todolist/
-      - ./.docker_env:/todolist/.env
     depends_on:
       db:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
 
+  bot:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    volumes:
+      - ./.env:/todolist/.env
+    command: python manage.py runbot
+
   frontend:
-    image: sermalenk/skypro-front:lesson-37
+    image: sermalenk/skypro-front:lesson-38
     restart: on-failure
     ports:
       - '${FRONTEND_PORT:-80}:80'
