@@ -30,6 +30,7 @@ jobs:
       FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
       SOCIAL_AUTH_VK_OAUTH2_KEY: ${{ secrets.SOCIAL_AUTH_VK_OAUTH2_KEY }}
       SOCIAL_AUTH_VK_OAUTH2_SECRET: ${{ secrets.SOCIAL_AUTH_VK_OAUTH2_SECRET }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       SERVER_HOST: ${{ secrets.SERVER_HOST }}
     steps:
       - name: checkout
