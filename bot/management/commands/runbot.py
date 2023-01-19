@@ -27,6 +27,11 @@ class Command(BaseCommand):
         self.status = self.Status.idle
 
     def handle(self, *args, **kwargs):
+        """
+        Цикл бота, при каждой итерации получает сообщение пользователя,
+        возвращает ответ на запрос пользователя
+        """
+
         offset = 0
 
         while True:
@@ -36,6 +41,12 @@ class Command(BaseCommand):
                 self.handle_message(item.message)
 
     def handle_message(self, msg: Message):
+        """
+        Метод принимает сообщение,
+        создает запись в бд, если такого пользователя нет,
+        возвращает ответ в соответствии с верификацией пользователя
+        """
+
         tg_user, created = TgUser.objects.get_or_create(
             tg_id=msg.from_.id,
             defaults={
@@ -53,6 +64,10 @@ class Command(BaseCommand):
             self.handle_user_without_verification(msg, tg_user)
 
     def handle_verified_user(self, msg: Message, tg_user: TgUser):
+        """
+        Принимает сообщение и данные верифицированного пользователя tg,
+        возвращает ответ в соответствии с запросом
+        """
         if not msg.text:
             return
 
@@ -70,11 +85,15 @@ class Command(BaseCommand):
             resp = self.manage.input_title_goal(msg, tg_user)
             self.status = self.Status.idle
         else:
-            resp = {'message': "Чего изволите?\nПопробуйте указать команду начиная со знака '/'"}
+            resp = {'message': 'Чего изволите?\nПопробуйте указать команду начиная со знака "/"'}
 
         self.tg_client.send_message(msg.chat.id, resp.get('message'))
 
     def check_commands(self, msg, tg_user):
+        """
+        Проверяет, является ли сообщение командой
+        """
+
         if '/goals' == msg.text:
             resp = self.manage.goals(tg_user)
 
@@ -94,6 +113,11 @@ class Command(BaseCommand):
         return resp
 
     def handle_user_without_verification(self, msg: Message, tg_user: TgUser):
+        """
+        Генерирует и сохраняет в бд код верификации,
+        после чего отправляет его пользователю
+        """
+
         tg_user.set_verification_code()
         tg_user.save(update_fields=['verification_code'])
         self.tg_client.send_message(

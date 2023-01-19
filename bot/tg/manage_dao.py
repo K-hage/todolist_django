@@ -10,6 +10,11 @@ class ManageDAO:
         self.response = {}
 
     def goals(self, tg_user):
+        """
+        Возвращает словарь с целями и
+        сгенерированным сообщением об этих целях
+        """
+
         goals = (
             Goal.objects.filter(category__board__participants__user=tg_user.user).
             exclude(status=Goal.Status.archived)
@@ -24,6 +29,11 @@ class ManageDAO:
         return self.response
 
     def category(self, tg_user):
+        """
+        Возвращает словарь с категориями и
+        сгенерированным сообщением об этих категорий
+        """
+
         category = GoalCategory.objects.filter(
             board__participants__user=tg_user.user,
             is_deleted=False
@@ -38,6 +48,12 @@ class ManageDAO:
         return self.response
 
     def input_category(self, msg, tg_user):
+        """
+        Записывает в словарь выбранную категорию для создания цели
+        возвращает словарь с выбранной категорией и
+        сгенерированным сообщением ответа
+        """
+
         category = GoalCategory.objects.filter(
             title__exact=msg.text,
             board__participants__user=tg_user.user,
@@ -54,30 +70,44 @@ class ManageDAO:
         return self.response
 
     def input_title_goal(self, msg, tg_user):
+        """
+        Создает цель в бд
+        возвращает словарь с созданной целью и
+        сгенерированным сообщением ответа
+        """
         category = self.storage_for_create['category']
-        Goal.objects.create(
+        goal = Goal.objects.create(
             user=category.user,
             title=msg.text,
             category=category
         )
-        goal = (
-            Goal.objects.filter(
-                category__board__participants__user=tg_user.user,
-                title__exact=msg.text
-            ).
-            exclude(status=Goal.Status.archived)
-        ).first()
+
         self.response['goal'] = goal
+
         if goal:
             self.response['message'] = 'Цель создана'
         return self.response
 
     def start_creating_goal(self, tg_user):
+        """
+        Для начала создания цели.
+        Очищает словарь создания цели,
+        возвращает словарь со
+        сгенерированным сообщением ответа
+        """
+
         self.storage_for_create = {}
         self.response['message'] = 'Выберите в какой категории создать цель!\n' + self.category(tg_user)['message']
         return self.response
 
     def cancel(self):
+        """
+        Для отмены создания цели.
+        Очищает словарь создания цели,
+        возвращает словарь со
+        сгенерированным сообщением ответа
+        """
+
         self.storage_for_create = {}
         self.response['message'] = 'Операция отменена'
         self.response['items'] = self.storage_for_create
