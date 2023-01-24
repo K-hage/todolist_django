@@ -30,6 +30,7 @@ class TgClient:
                 'timeout': timeout
             }
         )
+
         return GetUpdatesResponse.Schema().load(resp.json())
 
     def send_message(self, chat_id: int, text: str) -> SendMessageResponse:
