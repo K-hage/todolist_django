@@ -14,9 +14,9 @@ from marshmallow_dataclass import dataclass
 @dataclass
 class MessageFrom:
     id: int
-    first_name: str | None
-    last_name: str | None
-    username: str
+    first_name: str | None = None
+    last_name: str | None = None
+    username: str | None = None
 
     class Meta:
         unknown = EXCLUDE
@@ -49,7 +49,7 @@ class Message:
 @dataclass
 class UpdateObj:
     update_id: int
-    message: Message
+    message: Message | None = None
 
     class Meta:
         unknown = EXCLUDE
@@ -69,7 +69,7 @@ class GetUpdatesResponse:
 @dataclass
 class SendMessageResponse:
     ok: bool
-    result: Message
+    result: Message | None = None
 
     Schema: ClassVar[Type[Schema]] = Schema  # noqa: F811
 

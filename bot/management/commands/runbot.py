@@ -46,6 +46,8 @@ class Command(BaseCommand):
         создает запись в бд, если такого пользователя нет,
         возвращает ответ в соответствии с верификацией пользователя
         """
+        if not msg:
+            return
 
         tg_user, created = TgUser.objects.get_or_create(
             tg_id=msg.from_.id,
