@@ -31,7 +31,11 @@ class GoalView(RetrieveUpdateDestroyAPIView):
     permission_classes = [GoalPermissions]
 
     def get_queryset(self):
-        return Goal.objects.filter(category__board__participants__user=self.request.user)
+        return (
+            Goal.objects.
+            filter(category__board__participants__user=self.request.user).
+            exclude(status=Goal.Status.archived)
+        )
 
     def perform_destroy(self, instance):
         instance.status = Goal.Status.archived

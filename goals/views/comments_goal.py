@@ -32,7 +32,7 @@ class CommentView(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return GoalComment.objects.filter(
             goal__category__board__participants__user=self.request.user
-        )
+        ).exclude(goal__category__is_deleted=True)
 
 
 class CommentListView(ListAPIView):
@@ -51,4 +51,4 @@ class CommentListView(ListAPIView):
     def get_queryset(self):
         return GoalComment.objects.filter(
             goal__category__board__participants__user=self.request.user
-        )
+        ).exclude(goal__category__is_deleted=True)
