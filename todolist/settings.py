@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'social_django',
     'django_filters',
+    'drf_spectacular'
 ]
 
 INSTALLED_APPS += MY_APPS
@@ -145,3 +146,15 @@ TG_BOT_TOKEN = env.str('TELEGRAM_BOT_TOKEN')
 
 #
 DOMAIN_SITE = env.str('DOMAIN_SITE')
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Todolist API',
+    'DESCRIPTION': 'Awesome todolist project',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'POSTPROCESSING_HOOKS': []
+}
