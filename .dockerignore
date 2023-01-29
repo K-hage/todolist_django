@@ -20,3 +20,6 @@ postgres-data
 __pycache__/
 .env.actions
 swagger/
+pytests.ini
+tests/
+.pytest_cache/
