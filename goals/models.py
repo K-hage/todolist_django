@@ -71,7 +71,7 @@ class Goal(DatesModelMixin):
     )
     title = models.CharField(
         verbose_name='Заголовок',
-        max_length=255
+        max_length=255,
     )
     description = models.TextField(
         verbose_name='Описание',

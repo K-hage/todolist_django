@@ -7,7 +7,7 @@ from bot.tg.dc import (
 
 
 class TgClient:
-    def __init__(self, token):
+    def __init__(self, token) -> None:
         self.token = token
 
     def get_url(self, method: str):

@@ -42,5 +42,5 @@ class TgUser(models.Model):
     def __str__(self):
         return self.username
 
-    def set_verification_code(self):
+    def set_verification_code(self) -> None:
         self.verification_code = ''.join(random.choice(CODE_VOCABULARY) for _ in range(12))
