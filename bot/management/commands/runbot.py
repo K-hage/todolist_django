@@ -40,7 +40,7 @@ class Command(BaseCommand):
                 offset = item.update_id + 1
                 self.handle_message(item.message)
 
-    def handle_message(self, msg: Message):
+    def handle_message(self, msg: Message | None):
         """
         Метод принимает сообщение,
         создает запись в бд, если такого пользователя нет,
@@ -91,13 +91,13 @@ class Command(BaseCommand):
 
         self.tg_client.send_message(msg.chat.id, resp.get('message'))
 
-    def check_commands(self, msg, tg_user):
+    def check_commands(self, msg: Message, tg_user: TgUser):
         """
         Проверяет, является ли сообщение командой
         """
 
         if '/goals' == msg.text:
-            resp = self.manage.goals(tg_user)
+            resp: dict[str, str] = self.manage.goals(tg_user)
 
         elif '/site' == msg.text:
             resp = {'message': settings.DOMAIN_SITE}

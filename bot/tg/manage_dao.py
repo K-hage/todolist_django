@@ -1,3 +1,7 @@
+from typing import Any
+
+from bot.models import TgUser
+from bot.tg.dc import Message
 from goals.models import (
     Goal,
     GoalCategory
@@ -5,11 +9,11 @@ from goals.models import (
 
 
 class ManageDAO:
-    def __init__(self):
-        self.storage_for_create = {}
-        self.response = {}
+    def __init__(self) -> None:
+        self.storage_for_create: dict[str, Any] = {}
+        self.response: dict[str, Any] = {}
 
-    def goals(self, tg_user):
+    def goals(self, tg_user: TgUser) -> dict[str, str]:
         """
         Возвращает словарь с целями и
         сгенерированным сообщением об этих целях
@@ -28,7 +32,7 @@ class ManageDAO:
             self.response['message'] = 'Список целей пуст'
         return self.response
 
-    def category(self, tg_user):
+    def category(self, tg_user: TgUser):
         """
         Возвращает словарь с категориями и
         сгенерированным сообщением об этих категорий
@@ -47,7 +51,7 @@ class ManageDAO:
             self.response['message'] = 'Список категорий пуст'
         return self.response
 
-    def input_category(self, msg, tg_user):
+    def input_category(self, msg: Message, tg_user: TgUser) -> dict[str, str]:
         """
         Записывает в словарь выбранную категорию для создания цели
         возвращает словарь с выбранной категорией и
@@ -69,7 +73,7 @@ class ManageDAO:
             self.response['message'] += self.category(tg_user)['message']
         return self.response
 
-    def input_title_goal(self, msg, tg_user):
+    def input_title_goal(self, msg: Message, tg_user: TgUser) -> dict[str, str]:
         """
         Создает цель в бд
         возвращает словарь с созданной целью и
@@ -88,7 +92,7 @@ class ManageDAO:
             self.response['message'] = 'Цель создана'
         return self.response
 
-    def start_creating_goal(self, tg_user):
+    def start_creating_goal(self, tg_user: TgUser) -> dict[str, str]:
         """
         Для начала создания цели.
         Очищает словарь создания цели,
@@ -100,7 +104,7 @@ class ManageDAO:
         self.response['message'] = 'Выберите в какой категории создать цель!\n' + self.category(tg_user)['message']
         return self.response
 
-    def cancel(self):
+    def cancel(self) -> dict[str, str]:
         """
         Для отмены создания цели.
         Очищает словарь создания цели,
