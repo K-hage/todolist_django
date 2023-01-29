@@ -10,7 +10,8 @@ def test_board_update(user_factory, get_auth_client, board_participant_factory):
     owner = user_factory()
     board_participant = board_participant_factory(user=owner)
     board_participant2 = board_participant_factory(
-        board=board_participant.board, role=BoardParticipant.Role.writer
+        board=board_participant.board,
+        role=BoardParticipant.Role.writer
     )
     user3 = user_factory()
 
@@ -40,8 +41,8 @@ def test_board_update(user_factory, get_auth_client, board_participant_factory):
     )
 
     assert response.status_code == 200
-    assert response.data['participants'][1]['role'] == BoardParticipant.Role.reader
-    assert response.data['participants'][2]['role'] == BoardParticipant.Role.writer
+    assert response.data['participants'][0]['role'] == BoardParticipant.Role.reader
+    assert response.data['participants'][1]['role'] == BoardParticipant.Role.writer
 
 
 @pytest.mark.django_db
