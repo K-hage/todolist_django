@@ -23,3 +23,4 @@ swagger/
 pytests.ini
 tests/
 .pytest_cache/
+.mypy_cache/
