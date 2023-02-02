@@ -70,4 +70,4 @@ class GoalCommentFactory(DatesFactoryMixin):
 
     user = factory.SubFactory(UserFactory)
     goal = factory.SubFactory(GoalFactory)
-    text = factory.Faker('sentence', nb_words=5)
+    text = factory.Faker('text')
