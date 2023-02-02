@@ -1,5 +1,8 @@
+import json
+
 import pytest
 from django.urls import reverse
+from rest_framework import status
 
 from goals.models import BoardParticipant
 
@@ -16,20 +19,19 @@ def test_board_update(user_factory, get_auth_client, board_participant_factory):
     user3 = user_factory()
 
     data = {
-        'title': board_participant.board.title,
         'participants': [
             {
-                'user': board_participant2.user.username,
                 'role': BoardParticipant.Role.reader,  # изменяем редактора на читателя
+                'user': board_participant2.user.username
             },
             {
-                'user': user3.username,
                 'role': BoardParticipant.Role.writer,  # добавляем нового участника
-            },
+                'user': user3.username
+            }
         ],
-        'user': board_participant.user.username,
+        'title': board_participant.board.title,
     }
-
+    data = json.dumps(data)
     auth_client = get_auth_client(owner)
     url = reverse('detail_board', kwargs={'pk': board_participant.board.pk})
 
@@ -37,10 +39,9 @@ def test_board_update(user_factory, get_auth_client, board_participant_factory):
         path=url,
         data=data,
         content_type='application/json',
-        HTTP_ACCEPT='application/json',
     )
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert response.data['participants'][0]['role'] == BoardParticipant.Role.reader
     assert response.data['participants'][1]['role'] == BoardParticipant.Role.writer
 
@@ -67,5 +68,5 @@ def test_board_update_with_another_auth_user(
         content_type='application/json',
     )
 
-    assert response.status_code == 404
+    assert response.status_code == status.HTTP_404_NOT_FOUND
     assert response.data == {'detail': 'Страница не найдена.'}

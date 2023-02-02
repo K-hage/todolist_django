@@ -26,7 +26,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = USER_MODEL
 
-    username = factory.Faker('name')
+    username = factory.Faker('user_name')
     email = factory.Faker('email')
     password = factory.Faker('password')
 
@@ -35,7 +35,7 @@ class BoardFactory(DatesFactoryMixin):
     class Meta:
         model = Board
 
-    title = factory.Faker('sentence', nb_words=5)
+    title = factory.Faker('text')
 
 
 class BoardParticipantFactory(DatesFactoryMixin):

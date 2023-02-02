@@ -1,8 +1,14 @@
 import pytest
 from django.contrib.auth import get_user_model
+from rest_framework.test import APIClient
 
 
 USER_MODEL = get_user_model()
+
+
+@pytest.fixture()
+def client():
+    return APIClient()
 
 
 @pytest.fixture
