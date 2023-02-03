@@ -1,5 +1,3 @@
-import json
-
 import pytest
 from django.urls import reverse
 from rest_framework import status
@@ -13,12 +11,11 @@ def test_comment_update(get_auth_client, board_participant, comment_goal):
 
     auth_client = get_auth_client(board_participant.user)
 
-    payload = json.dumps(data)
     url = reverse('detail_comment', kwargs={'pk': comment_goal.pk})
     response = auth_client.patch(
         path=url,
-        data=payload,
-        content_type='application/json',
+        data=data,
+        format='json',
     )
 
     assert response.status_code == status.HTTP_200_OK
