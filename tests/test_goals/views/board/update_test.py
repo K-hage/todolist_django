@@ -1,5 +1,3 @@
-import json
-
 import pytest
 from django.urls import reverse
 from rest_framework import status
@@ -31,14 +29,14 @@ def test_board_update(user_factory, get_auth_client, board_participant_factory):
         ],
         'title': board_participant.board.title,
     }
-    data = json.dumps(data)
+
     auth_client = get_auth_client(owner)
     url = reverse('detail_board', kwargs={'pk': board_participant.board.pk})
 
     response = auth_client.patch(
         path=url,
         data=data,
-        content_type='application/json',
+        format='json'
     )
 
     assert response.status_code == status.HTTP_200_OK
