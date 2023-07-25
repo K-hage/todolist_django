@@ -63,7 +63,6 @@ def test_board_update_with_another_auth_user(
     response = auth_client.put(
         f'/goals/board/{board_participant.board.id}',
         data=data,
-        content_type='application/json',
     )
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
